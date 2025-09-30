@@ -2,7 +2,19 @@ services:
   - type: web
     name: mi-ebook-bot
     env: python
-    runtime: python-3.9  # Añade esta línea para especificar la versión
+    runtime: python-3.9
     buildCommand: pip install -r requirements.txt
-    startCommand: python main.py
+    startCommand: gunicorn -w 4 -b 0.0.0.0:5000 app:app
     plan: free
+    envVar:
+      - key: TELEGRAM_BOT_TOKEN
+        fromDatabase:
+          value: TELEGRAM_BOT_TOKEN
+      - key: NOWPAYMENTS_API_KEY
+        fromDatabase:
+          value: NOWPAYMENTS_API_KEY
+      - key: NOWPAYMENTS_SECRET
+        fromDatabase:
+          value: NOWPAYMENTS_SECRET
+      - key: CALLBACK_URL
+        value: https://mi-ebook-bot.onrender.com/webhook/nowpayments
