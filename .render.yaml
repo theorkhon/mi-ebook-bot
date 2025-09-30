@@ -2,6 +2,7 @@ services:
   - type: web
     name: mi-ebook-bot
     env: python
+    runtime: python-3.9  # Añade esta línea para especificar la versión
     buildCommand: pip install -r requirements.txt
     startCommand: python main.py
     plan: free
