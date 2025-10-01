@@ -47,7 +47,7 @@ app.post('/telegram', (req, res) => {
     const chatId = update.message.chat.id;
     const keyboard = {
       inline_keyboard: [[
-        { text: '🛒 Comprar ebook', callback_ 'comprar' }
+        { text: '🛒 Comprar ebook', callback_data: 'comprar' }
       ]]
     };
     sendMsg(chatId, `📚 ¡Hola! Bienvenido a mi tienda de ebooks.\n\nHaz clic para comenzar.`, keyboard);
@@ -65,8 +65,8 @@ app.post('/callback', (req, res) => {
   if (data === 'comprar') {
     const keyboard = {
       inline_keyboard: [
-        [{ text: '🇪🇸 Español', callback_ 'idioma_es' }],
-        [{ text: '🇬🇧 English', callback_ 'idioma_en' }]
+        [{ text: '🇪🇸 Español', callback_data: 'idioma_es' }],
+        [{ text: '🇬🇧 English', callback_data: 'idioma_en' }]
       ]
     };
     sendMsg(chatId, `📚 ¿En qué idioma quieres tu ebook?`, keyboard);
@@ -77,9 +77,9 @@ app.post('/callback', (req, res) => {
     userData[chatId] = { idioma: data === 'idioma_es' ? 'es' : 'en' };
     const keyboard = {
       inline_keyboard: [
-        [{ text: '🪙 USDT (automático)', callback_ 'pago_usdt' }],
-        [{ text: '🔷 PayPal', callback_ 'pago_paypal' }],
-        [{ text: '🏦 Transferencia bancaria', callback_ 'pago_banco' }]
+        [{ text: '🪙 USDT (automático)', callback_data: 'pago_usdt' }],
+        [{ text: '🔷 PayPal', callback_data: 'pago_paypal' }],
+        [{ text: '🏦 Transferencia bancaria', callback_data: 'pago_banco' }]
       ]
     };
     const msg = userData[chatId].idioma === 'es'
@@ -132,8 +132,8 @@ app.post('/callback', (req, res) => {
     userData[chatId].metodo = 'banco';
     const keyboard = {
       inline_keyboard: [
-        [{ text: '🇪🇸 España (SEPA)', callback_ 'banco_es' }],
-        [{ text: '🇪🇨 Ecuador', callback_ 'banco_ec' }]
+        [{ text: '🇪🇸 España (SEPA)', callback_data: 'banco_es' }],
+        [{ text: '🇪🇨 Ecuador', callback_data: 'banco_ec' }]
       ]
     };
     const lang = userData[chatId].idioma;
@@ -165,7 +165,7 @@ app.post('/callback', (req, res) => {
     sendMsg(chatId, msg);
   }
 
-  // Responder al botón
+  // Responder al botón (sin alerta)
   axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/answerCallbackQuery`, {
     callback_query_id: callbackQuery.id
   });
